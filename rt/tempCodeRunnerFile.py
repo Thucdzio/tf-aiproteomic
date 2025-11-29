@@ -1,2 +1,5 @@
-x = torch.randint(0, vocab_size, (batch_size, seq_len))
-    print(x)
+  sample_x, sample_y = loader.next_batch('test')
+    pred, _ = model(sample_x, sample_y)
+    print(f"Input shape: {sample_x.shape}")
+    print(f"Target RT: {sample_y.item():.4f}")
+    print(f"Predicted RT: {pred.item():.4f}")
