@@ -1,0 +1,89 @@
+ModelMS2Bert(
+  (dropout): Dropout(p=0.1, inplace=False)
+  (input_nn): Input_26AA_Mod_PositionalEncoding(
+    (mod_nn): Mod_Embedding_FixFirstK(
+      (nn): Linear(in_features=103, out_features=2, bias=False)
+    )
+    (aa_emb): Embedding(27, 240, padding_idx=0)
+    (pos_encoder): PositionalEncoding()
+  )
+  (meta_nn): Meta_Embedding(
+    (nn): Linear(in_features=9, out_features=7, bias=True)
+  )
+  (hidden_nn): Hidden_HFace_Transformer(
+    (bert): BertEncoder(
+      (layer): ModuleList(
+        (0-3): 4 x BertLayer(
+          (attention): BertAttention(
+            (self): BertSelfAttention(
+              (query): Linear(in_features=256, out_features=256, bias=True)
+              (key): Linear(in_features=256, out_features=256, bias=True)
+              (value): Linear(in_features=256, out_features=256, bias=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (output): BertSelfOutput(
+              (dense): Linear(in_features=256, out_features=256, bias=True)
+              (LayerNorm): LayerNorm((256,), eps=1e-08, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+          (intermediate): BertIntermediate(
+            (dense): Linear(in_features=256, out_features=1024, bias=True)
+            (intermediate_act_fn): GELUActivation()
+          )
+          (output): BertOutput(
+            (dense): Linear(in_features=1024, out_features=256, bias=True)
+            (LayerNorm): LayerNorm((256,), eps=1e-08, elementwise_affine=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+    )
+  )
+  (output_nn): Decoder_Linear(
+    (nn): Sequential(
+      (0): Linear(in_features=256, out_features=64, bias=True)
+      (1): PReLU(num_parameters=1)
+      (2): Linear(in_features=64, out_features=4, bias=True)
+    )
+  )
+  (modloss_nn): ModuleList(
+    (0): Hidden_HFace_Transformer(
+      (bert): BertEncoder(
+        (layer): ModuleList(
+          (0): BertLayer(
+            (attention): BertAttention(
+              (self): BertSelfAttention(
+                (query): Linear(in_features=256, out_features=256, bias=True)
+                (key): Linear(in_features=256, out_features=256, bias=True)
+                (value): Linear(in_features=256, out_features=256, bias=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+              )
+              (output): BertSelfOutput(
+                (dense): Linear(in_features=256, out_features=256, bias=True)
+                (LayerNorm): LayerNorm((256,), eps=1e-08, elementwise_affine=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+              )
+            )
+            (intermediate): BertIntermediate(
+              (dense): Linear(in_features=256, out_features=1024, bias=True)
+              (intermediate_act_fn): GELUActivation()
+            )
+            (output): BertOutput(
+              (dense): Linear(in_features=1024, out_features=256, bias=True)
+              (LayerNorm): LayerNorm((256,), eps=1e-08, elementwise_affine=True)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+      )
+    )
+    (1): Decoder_Linear(
+      (nn): Sequential(
+        (0): Linear(in_features=256, out_features=64, bias=True)
+        (1): PReLU(num_parameters=1)
+        (2): Linear(in_features=64, out_features=4, bias=True)
+      )
+    )
+  )
+)

@@ -1,0 +1,12 @@
+fixed_sequence_len: 0
+min_pred_value: 0.0
+charged_frag_types:
+- b_z1
+- b_z2
+- y_z1
+- y_z2
+- b_modloss_z1
+- b_modloss_z2
+- y_modloss_z1
+- y_modloss_z2
+dropout: 0.1
