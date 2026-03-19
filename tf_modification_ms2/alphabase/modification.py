@@ -1,0 +1,563 @@
+import os
+from typing import List, Union
+
+import numba
+import numpy as np
+import pandas as pd
+
+import os
+
+from alphabase._const import CONST_FILE_FOLDER
+
+from alphabase.atom import (
+    calc_mass_from_formula,
+    parse_formula,
+)
+
+
+class _ConstantsClass(type):
+    """A metaclass for classes that should only contain string constants."""
+
+    def __setattr__(cls, name, value):
+        raise TypeError("Constants class cannot be modified")
+
+
+class ModificationKeys(metaclass=_ConstantsClass):
+    """Constants for modification format strings and terminal sites.
+
+    Modification names in AlphaBase follow the pattern: `ModName@Site`
+    For example: `Phospho@S`, `Oxidation@M`, `Acetyl@Protein_N-term`
+
+    Multiple modifications are joined with SEPARATOR:
+        `Phospho@S;Oxidation@M` for mods, `5;7` for sites
+
+    Terminal modifications use special site identifiers:
+        - `Any_N-term`: Any peptide N-terminus (e.g., `Acetyl@Any_N-term`)
+        - `Protein_N-term`: Protein N-terminus only
+        - AA-specific terminals: `Q^Any_N-term` for Gln-specific N-term mod
+
+    Examples
+    --------
+    >>> mods = "Phospho@S;Oxidation@M"
+    >>> mod_list = mods.split(ModificationKeys.SEPARATOR)  # ['Phospho@S', 'Oxidation@M']
+    >>> mod_name, site = mod_list[0].split(ModificationKeys.SITE_SEPARATOR)  # 'Phospho', 'S'
+
+    """
+
+    #: Separator for multiple values: "Phospho@S;Oxidation@M" or "5;7" for sites
+    SEPARATOR: str = ";"
+
+    #: Separator between mod name and site: "Phospho@S" -> "Phospho" + "@" + "S"
+    SITE_SEPARATOR: str = "@"
+
+    #: Separator for AA-specific terminal mods: "Q^Any_N-term" -> "Q" + "^" + "Any_N-term"
+    TERM_SEPARATOR: str = "^"
+
+    #: Any peptide N-terminus: "Acetyl@Any_N-term"
+    ANY_N_TERM: str = "Any_N-term"
+
+    #: Any peptide C-terminus: "Amidated@Any_C-term"
+    ANY_C_TERM: str = "Any_C-term"
+
+    #: Protein N-terminus only: "Acetyl@Protein_N-term"
+    PROTEIN_N_TERM: str = "Protein_N-term"
+
+    #: Protein C-terminus only
+    PROTEIN_C_TERM: str = "Protein_C-term"
+
+    #: AA-specific N-term suffix: "Gln->pyro-Glu@Q^Any_N-term" (Q at any N-term)
+    ANY_N_TERM_SPECIFIC: str = "^Any_N-term"
+
+    #: AA-specific C-term suffix
+    ANY_C_TERM_SPECIFIC: str = "^Any_C-term"
+
+    #: AA-specific Protein N-term suffix: "Met-loss@M^Protein_N-term"
+    PROTEIN_N_TERM_SPECIFIC: str = "^Protein_N-term"
+
+    #: AA-specific Protein C-term suffix
+    PROTEIN_C_TERM_SPECIFIC: str = "^Protein_C-term"
+
+
+#: Main entry of modification infomation (DataFrame fotmat).
+MOD_DF: pd.DataFrame = pd.DataFrame()
+
+
+MOD_INFO_DICT: dict = {}
+#: Modification to formula str dict. {mod_name: formula str ('H(1)C(2)O(3)')}
+MOD_CHEM: dict = {}
+#: Modification to mass dict.
+MOD_MASS: dict = {}
+#: Modification to modification neutral loss dict.
+MOD_LOSS_MASS: dict = {}
+# Modification to formula dict of dict, i.e. {modname: {'C': n, 'H': m, ...}}
+MOD_Composition: dict = {}
+#: Modification loss importance
+MOD_LOSS_IMPORTANCE: dict = {}
+
+_MOD_CLASSIFICATION_USER_ADDED = "User-added"
+
+
+def update_all_by_MOD_DF():
+    """
+    As DataFrame is more conveneint in data operation,
+    we can also process MOD_DF and then update all global
+    modification variables from MOD_DF
+    """
+
+    MOD_INFO_DICT.clear()
+    MOD_INFO_DICT.update(MOD_DF.to_dict(orient="index"))
+    MOD_CHEM.clear()
+    MOD_CHEM.update(MOD_DF["composition"].to_dict())
+    MOD_MASS.clear()
+    MOD_MASS.update(MOD_DF["mass"].to_dict())
+    MOD_LOSS_MASS.clear()
+    MOD_LOSS_MASS.update(MOD_DF["modloss"].to_dict())
+    MOD_LOSS_IMPORTANCE.clear()
+    MOD_LOSS_IMPORTANCE.update(MOD_DF["modloss_importance"].to_dict())
+
+    MOD_Composition.clear()
+    for mod, chem in MOD_CHEM.items():
+        MOD_Composition[mod] = dict(parse_formula(chem))
+
+
+def add_modifications_for_lower_case_AA():
+    """Add modifications for lower-case AAs for advanced usages"""
+    global MOD_DF
+    lower_case_df = MOD_DF.copy()
+
+    def _mod_lower_case(modname):
+        modname, site = modname.split(ModificationKeys.SITE_SEPARATOR)
+        if len(site) == 1:
+            return modname + ModificationKeys.SITE_SEPARATOR + site.lower()
+        elif ModificationKeys.TERM_SEPARATOR in site:
+            site = site[0].lower() + site[1:]
+            return modname + ModificationKeys.SITE_SEPARATOR + site
+        else:
+            return ""
+
+    lower_case_df["mod_name"] = lower_case_df["mod_name"].apply(_mod_lower_case)
+    lower_case_df = lower_case_df[lower_case_df["mod_name"] != ""]
+    lower_case_df.set_index("mod_name", drop=False, inplace=True)
+    lower_case_df["lower_case_AA"] = True
+    MOD_DF["lower_case_AA"] = False
+    MOD_DF = pd.concat([MOD_DF, lower_case_df])
+    update_all_by_MOD_DF()
+
+
+def keep_modloss_by_importance(modloss_importance_level: float = 1.0):
+    MOD_DF["modloss"] = MOD_DF["modloss_original"]
+    MOD_DF.loc[MOD_DF.modloss_importance < modloss_importance_level, "modloss"] = 0
+    MOD_LOSS_MASS.clear()
+    MOD_LOSS_MASS.update(MOD_DF["modloss"].to_dict())
+
+
+def load_mod_df(
+    tsv: str = os.path.join(CONST_FILE_FOLDER, "modification.tsv"),
+    *,
+    modloss_importance_level=1,
+):
+    global MOD_DF
+    MOD_DF = pd.read_table(tsv, keep_default_na=False)
+
+    if any(mask := MOD_DF["mod_name"].str.contains(" ", regex=False)):
+        raise ValueError(
+            f"Modification names must not contain spaces: {MOD_DF[mask]['mod_name'].values}"
+        )
+
+    MOD_DF.drop_duplicates("mod_name", inplace=True)
+    MOD_DF.fillna("", inplace=True)
+    MOD_DF["unimod_id"] = MOD_DF["unimod_id"].astype(np.int32)
+    MOD_DF.set_index("mod_name", drop=False, inplace=True)
+    MOD_DF["mass"] = MOD_DF["composition"].apply(calc_mass_from_formula)
+    MOD_DF["modloss_original"] = MOD_DF["modloss_composition"].apply(
+        calc_mass_from_formula
+    )
+    MOD_DF["modloss"] = MOD_DF["modloss_original"]
+    keep_modloss_by_importance(modloss_importance_level)
+    update_all_by_MOD_DF()
+
+
+load_mod_df()
+
+
+def calc_modification_mass(
+    nAA: int, mod_names: List[str], mod_sites: List[int]
+) -> np.ndarray:
+    """
+    Calculate modification masses for the given peptide length (`nAA`),
+    and modified site list.
+
+    Parameters
+    ----------
+    nAA : int
+        Peptide length
+
+    mod_names : list
+        List[str]. Modification name list
+
+    mod_sites : list
+        List[int]. Modification site list corresponding to `mod_names`.
+        * `site=0` refers to an N-term modification
+        * `site=-1` refers to a C-term modification
+        * `1<=site<=peplen` refers to a normal modification
+
+    Returns
+    -------
+    np.ndarray
+        1-D array with length=`nAA`.
+        Masses of modifications through the peptide,
+        `0` if sites has no modifications
+    """
+    masses = np.zeros(nAA)
+    for site, mod in zip(mod_sites, mod_names):
+        if site == 0 or site == -1:
+            masses[site] += MOD_MASS[mod]
+        else:
+            masses[site - 1] += MOD_MASS[mod]
+    return masses
+
+
+def calc_mod_masses_for_same_len_seqs(
+    nAA: int, mod_names_list: List[List[str]], mod_sites_list: List[List[int]]
+) -> np.ndarray:
+    """
+    Calculate modification masses for the given peptides with same peptide length (`nAA`).
+
+    Parameters
+    ----------
+    nAA : int
+
+        Peptide length
+
+    mod_names_list : List[List[str]]
+        List (pep_count) of modification list (n_mod on each peptide)
+
+    mod_sites_list : List[List[int]]
+        List of modification site list corresponding to `mod_names_list`.
+        * `site=0` refers to an N-term modification
+        * `site=-1` refers to a C-term modification
+        * `1<=site<=peplen` refers to a normal modification
+
+    Returns
+    -------
+    np.ndarray
+        2-D array with shape=`(nAA, pep_count or len(mod_names_list)))`.
+        Masses of modifications through all the peptides,
+        `0` if sites without modifications.
+    """
+    masses = np.zeros((len(mod_names_list), nAA))
+    for i, (mod_names, mod_sites) in enumerate(zip(mod_names_list, mod_sites_list)):
+        for mod, site in zip(mod_names, mod_sites):
+            if site == 0 or site == -1:
+                masses[i, site] += MOD_MASS[mod]
+            else:
+                masses[i, site - 1] += MOD_MASS[mod]
+    return masses
+
+
+def calc_modification_mass_sum(mod_names: List[str]) -> float:
+    """
+    Calculate summed mass of the given modification
+    without knowing the sites and peptide length.
+    It is useful to calculate peptide mass.
+
+    Parameters
+    ----------
+    mod_names : List[str]
+        Modification name list
+
+    Returns
+    -------
+    float
+        Total mass
+    """
+    return np.sum([MOD_MASS[mod] for mod in mod_names])
+
+
+@numba.jit(nopython=True, nogil=True)
+def _calc_modloss_with_importance(
+    mod_losses: np.ndarray, _loss_importance: np.ndarray
+) -> np.ndarray:
+    """
+    Calculate modification loss masses (e.g. -98 Da for Phospho@S/T).
+    Modification with higher `_loss_importance` has higher priorities.
+    For example, `AM(Oxidation@M)S(Phospho@S)...`,
+    importance of Phospho@S > importance of Oxidation@M, so the modloss of
+    b3 ion will be -98 Da, not -64 Da.
+
+    Parameters
+    ----------
+    mod_losses : np.ndarray
+        Mod loss masses of each AA position
+
+    _loss_importance : np.ndarray
+        Mod loss importance of each AA position
+
+    Returns
+    -------
+    np.ndarray
+        New mod_loss masses selected by `_loss_importance`
+    """
+    prev_importance = _loss_importance[0]
+    prev_most = 0
+    for i, _curr_imp in enumerate(_loss_importance[1:], 1):
+        if _curr_imp > prev_importance:
+            prev_most = i
+            prev_importance = _curr_imp
+        else:
+            mod_losses[i] = mod_losses[prev_most]
+    return mod_losses
+
+
+def calc_modloss_mass_with_importance(
+    nAA: int,
+    mod_names: List,
+    mod_sites: List,
+    for_nterm_frag: bool,
+) -> np.ndarray:
+    """
+    Calculate modification loss masses (e.g. -98 Da for Phospho@S/T,
+    -64 Da for Oxidation@M). Modifications with higher `MOD_LOSS_IMPORTANCE`
+    have higher priorities. For example, `AS(Phospho@S)M(Oxidation@M)...`,
+    importance of Phospho@S > importance of Oxidation@M, so the modloss of
+    b3 ion will be -98 Da, not -64 Da.
+
+    Parameters
+    ----------
+    nAA : int
+        Peptide length
+
+    mod_names : List[str]
+        Modification name list
+
+    mod_sites : List[int]
+        Modification site list
+
+    for_nterm_frag : bool
+        If `True`, the loss will be on the
+        N-term fragments (mainly `b` ions);
+        If `False`, the loss will be on the
+        C-term fragments (mainly `y` ions)
+
+    Returns
+    -------
+    np.ndarray
+        mod_loss masses
+    """
+    if not mod_names:
+        return np.zeros(nAA - 1)
+    mod_losses = np.zeros(nAA + 2)
+    mod_losses[mod_sites] = [MOD_LOSS_MASS[mod] for mod in mod_names]
+    _loss_importance = np.zeros(nAA + 2)
+    _loss_importance[mod_sites] = [MOD_LOSS_IMPORTANCE.get(mod, 0) for mod in mod_names]
+
+    # Will not consider the modloss if the corresponding modloss_importance is 0
+    mod_losses[_loss_importance == 0] = 0
+
+    if for_nterm_frag:
+        return _calc_modloss_with_importance(mod_losses, _loss_importance)[1:-2]
+    else:
+        return _calc_modloss_with_importance(mod_losses[::-1], _loss_importance[::-1])[
+            -3:0:-1
+        ]
+
+
+@numba.njit
+def _calc_modloss(mod_losses: np.ndarray) -> np.ndarray:
+    """
+    Calculate modification loss masses (e.g. -98 Da for Phospho@S/T).
+
+    Parameters
+    ----------
+    mod_losses : np.ndarray
+        Mod loss masses of each AA position
+
+    Returns
+    -------
+    np.ndarray
+        New mod_loss masses
+    """
+    for i, _curr_loss in enumerate(mod_losses[1:], 1):
+        if _curr_loss == 0:
+            mod_losses[i] = mod_losses[i - 1]
+        else:
+            mod_losses[i] = _curr_loss
+    return mod_losses
+
+
+def calc_modloss_mass(
+    nAA: int,
+    mod_names: List,
+    mod_sites: List,
+    for_nterm_frag: bool,
+) -> np.ndarray:
+    """
+    Calculate modification loss masses (e.g. -98 Da for Phospho@S/T,
+    -64 Da for Oxidation@M). The mod loss mass is calculated by the
+    modification closer to the fragment sites. For example,
+    the modloss of the b3 ion for `AS(Phospho@S)M(Oxidation@M)...`
+    will be -64 Da.
+
+    Parameters
+    ----------
+    nAA : int
+        Peptide length
+
+    mod_names : List[str]
+        Modification name list
+
+    mod_sites : List[int]
+        Modification site list corresponding
+
+    for_nterm_frag : bool
+        If `True`, the loss will be on the
+        N-term fragments (mainly `b` ions);
+        If `False`, the loss will be on the
+        C-term fragments (mainly `y` ions)
+
+    Returns
+    -------
+    np.ndarray
+        mod_loss masses
+    """
+    if len(mod_names) == 0:
+        return np.zeros(nAA - 1)
+    mod_losses = np.zeros(nAA + 2)
+    mod_losses[mod_sites] = [MOD_LOSS_MASS[mod] for mod in mod_names]
+
+    if for_nterm_frag:
+        return _calc_modloss(mod_losses)[1:-2]
+    else:
+        return _calc_modloss(mod_losses[::-1])[-3:0:-1]
+
+
+def _check_mass_sanity(
+    mod_name: str,
+    composition: str,
+    smiles: str,
+):
+    """
+    Check if the mass of the modification is consistent with the formula.
+
+    Parameters
+    ----------
+    mod_name : str
+        Modification name (e.g. Mod@S)
+
+    composition : str
+        Composition formula (e.g. "H(4)O(2)"), used to calculate the mass of the modification
+
+    smiles : str
+        SMILES string of the modification, used to calculate and compare the mass of the modification
+
+    Raises
+    ------
+    ValueError
+        If the mass of the modification is inconsistent with the formula
+    """
+    if not smiles or mod_name not in MOD_MASS:
+        return
+    composition_mass = calc_mass_from_formula(composition)
+    if not np.allclose(composition_mass, MOD_MASS[mod_name], atol=1e-5):
+        raise ValueError(
+            f"Modification mass of {mod_name} is inconsistent with the composition formula: {composition}, df version {MOD_DF.loc[mod_name,['composition']]}"
+            f" calculated_mass={composition_mass}, mod_mass={MOD_MASS[mod_name]}"
+        )
+
+
+def _add_a_new_modification(
+    mod_name: str,
+    composition: str,
+    modloss_composition: str = "",
+    smiles: str = "",
+):
+    """
+    Add a new modification into :data:`MOD_DF` or update SMILES if modification already exists.
+
+    Parameters
+    ----------
+    mod_name : str
+        Modification name (e.g. Mod@S)
+
+    composition : str
+        Composition formula (e.g. "H(4)O(2)")
+
+    modloss_composition : str
+        Composition formula of the modification loss (e.g. "H(2)O(1)")
+
+    smiles : str
+        SMILES string of the modification
+    """
+    _check_mass_sanity(mod_name, composition, smiles)
+
+    if mod_name in MOD_DF.index:
+        # If the modification already exists, only update the SMILES
+        MOD_DF.loc[mod_name, "smiles"] = smiles
+        return
+
+    MOD_DF.loc[
+        mod_name,
+        [
+            "mod_name",
+            "composition",
+            "modloss_composition",
+            "classification",
+            "unimod_id",
+            "smiles",
+        ],
+    ] = [
+        mod_name,
+        composition,
+        modloss_composition,
+        _MOD_CLASSIFICATION_USER_ADDED,
+        0,
+        smiles,
+    ]
+    composition_mass = calc_mass_from_formula(composition)
+    modloss_mass = calc_mass_from_formula(modloss_composition)
+    MOD_DF.loc[mod_name, ["mass", "modloss"]] = (
+        composition_mass,
+        modloss_mass,
+    )
+    if MOD_DF.loc[mod_name, "modloss"] > 0:
+        MOD_DF.loc[mod_name, "modloss_importance"] = 1e10
+    MOD_DF.fillna(0, inplace=True)
+    # update_all_by_MOD_DF()
+
+
+def has_custom_mods():
+    """Returns whether `MOD_DF` has user-defined modifications or not."""
+    return len(MOD_DF[MOD_DF["classification"] == _MOD_CLASSIFICATION_USER_ADDED]) > 0
+
+
+def add_new_modifications(new_mods: Union[list, dict]):
+    """Add new modifications into :data:`MOD_DF`.
+
+    Parameters
+    ----------
+    new_mods : list or dict
+        list of tuples example:
+        ```
+        [(
+        mod@site:str (e.g. Mod@S),
+        composition:str (e.g. "H(4)O(2)"),
+        [optional] modloss composition:str (e.g. "H(2)O(1)"),
+        ), ...]
+        ```,
+        dict example:
+        ```
+        {
+        "mod@site": {
+        "composition":"H(4)O(2)",
+        "modloss_composition":"H(2)O(1)"
+        }, ...
+        }
+        ```
+    """
+    if isinstance(new_mods, list):
+        for items in new_mods:
+            _add_a_new_modification(*items)
+    else:
+        for mod_name, mod_info in new_mods.items():
+            _add_a_new_modification(mod_name, **mod_info)
+    update_all_by_MOD_DF()

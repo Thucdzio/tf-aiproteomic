@@ -1,0 +1,768 @@
+# alphaDIA output format documented at
+# https://alphadia.readthedocs.io/en/latest/methods/output-format.html
+alphadia:
+  reader_type: alphadia
+  rt_unit: minute
+  fixed_C57: False
+  column_mapping:
+    'raw_name':
+      - 'run' # < v2.0.0
+      - 'raw.name'
+    'sequence':
+      - 'sequence' # < v2.0.0
+      - 'precursor.sequence'
+    'charge':
+      - 'charge' # < v2.0.0
+      - 'precursor.charge'
+    'rt':
+      - 'rt_observed' # < v2.0.0
+      - 'precursor.rt.observed'
+    'rt_start': 'rt_start'
+    'rt_stop': 'rt_stop'
+    'ccs': 'ccs'
+    'mobility': 'mobility'
+    'proteins':
+      - 'proteins' # < v2.0.0
+      - 'pg.proteins'
+    'uniprot_ids': 'uniprot_ids'
+    'genes':
+      - 'genes' # < v2.0.0
+      - 'pg.genes'
+#    'scan_num': '' ?
+    'score':
+      - 'score' # < v2.0.0
+      - 'precursor.score'
+    'fdr': 'fdr'
+    'mods':
+      - 'mods' # < v2.0.0
+      - 'precursor.mods'
+    'precursor_id':
+      - 'precursor_idx' # < v2.0.0
+      - 'precursor.idx'
+    'precursor_intensity':
+      - 'precursor.intensity' # added in v2.0.0
+    'peptide_intensity':
+      - 'peptide.intensity' # added in v2.0.0
+    'intensity':
+      - 'intensity' # < v2.0.0
+      - 'pg.intensity'
+  modification_mapping_type: 'maxquant' # TODO: None?
+
+alphapept:
+  reader_type: alphapept
+  rt_unit: minute
+  column_mapping:
+    'rt': 'rt'
+    'scan_num': 'scan_no'
+    'spec_idx': 'raw_idx'
+    'query_id': 'query_idx'
+    'mobility': 'mobility'
+    'score': 'score'
+    'precursor_mz': 'mz'
+    'charge': 'charge'
+    'raw_name': 'raw_name' #parse from `ms_data.hdf`` file
+    'fdr': 'q_value'
+    'decoy': 'decoy'
+  modification_mapping_type: 'alphapept'
+
+
+maxquant:
+  reader_type: maxquant
+  rt_unit: minute
+  fixed_C57: True # does not show Carbamidomethyl in the modified sequences
+  mod_seq_columns:
+    - 'Modified sequence'
+  column_mapping:
+    'sequence': 'Sequence'
+    'charge': 'Charge'
+    'rt': 'Retention time'
+    'ccs': 'CCS'
+    'mobility':
+      - 'Mobility'
+      - 'IonMobility'
+      - 'K0' # Bug in MaxQuant? It should be 1/K0
+      - '1/K0'
+    'scan_num':
+      - 'Scan number'
+      - 'MS/MS scan number'
+      - 'MS/MS Scan Number'
+      - 'Scan index'
+    'raw_name': 'Raw file'
+    'precursor_mz': 'm/z'
+    'score': 'Score'
+    'proteins': 'Proteins'
+    'genes': ['Gene Names','Gene names']
+    'decoy': 'Reverse'
+    'intensity': 'Intensity'
+  modification_mapping_type: 'maxquant'
+
+modification_mappings:
+  maxquant:
+    'mTRAQ@K':
+      - 'K(mTRAQ)'
+    'mTRAQ@Any_N-term':
+      - '(mTRAQ)'
+    'Dimethyl@K':
+      - 'K(Dimethyl)'
+    'Dimethyl@R':
+      - 'R(Dimethyl)'
+    'Dimethyl@Any_N-term':
+      - '(Dimethyl)'
+    'Acetyl@Protein_N-term':
+      - '_(Acetyl (Protein N-term))'
+      - '_(ac)'
+    'Acetyl@K':
+      - 'K(ac)'
+    'Carbamidomethyl@C':
+      - 'C(Carbamidomethyl (C))'
+      - 'C(Carbamidomethyl)'
+    'Oxidation@M':
+      - 'M(Oxidation)'
+      - 'M(Oxidation (M))'
+      - 'M(ox)'
+    'Phospho@S':
+      - 'S(Phospho (S))'
+      - 'S(Phospho (ST))'
+      - 'S(Phospho (STY))'
+      - 'S(Phospho (STYDH))'
+      - 'S(ph)'
+      - 'pS'
+    'Phospho@T':
+      - 'T(Phospho (T))'
+      - 'T(Phospho (ST))'
+      - 'T(Phospho (STY))'
+      - 'T(Phospho (STYDH))'
+      - 'T(ph)'
+      - 'pT'
+    'Phospho@Y':
+      - 'Y(Phospho (Y))'
+      - 'Y(Phospho (STY))'
+      - 'Y(Phospho (STYDH))'
+      - 'pY'
+    'Phospho@D':
+      - 'D(Phospho (STYDH))'
+      - 'pD'
+    'Phospho@H':
+      - 'H(Phospho (STYDH))'
+      - 'pH'
+    'Crotonyl@K':
+      - 'K(cr)'
+    'Lactylation@K':
+      - 'K(la)'
+    'Succinyl@K':
+      - 'K(su)'
+    'Deamidated@N': ['N(Deamidation (NQ))','N(de)']
+    'Deamidated@Q': ['Q(Deamidation (NQ))','Q(de)']
+    'GG@K': ['K(GlyGly (K))', 'K(gl)']
+    'hydroxyisobutyryl@K': 'K(2-)'
+  alphapept:
+    'Carbamidomethyl@C': 'cC'
+    'Oxidation@M': 'oxM'
+    'Phospho@S': 'pS'
+    'Phospho@T': 'pT'
+    'Phospho@Y': 'pY'
+    'Acetyl@Protein_N-term': 'a'
+  # MSFragger modification masses are truncated (not rounded) to 4 decimal places with explicit zeros
+  msfragger:
+    'SATA@K':
+      - 'K(115.9932)'
+    'SATA@Any_N-term':
+      - 'N-term(115.9932)'
+    'SATA-Succinamide@K':
+      - 'K(247.0150)'
+    'SATA-Succinamide@Any_N-term':
+      - 'N-term(247.0150)'
+    'SATP@K':
+      - 'K(130.0088)'
+    'SATP@Any_N-term':
+      - 'N-term(130.0088)'
+    'SATP-Succinamide@K':
+      - 'K(261.0307)'
+    'SATP-Succinamide@Any_N-term':
+      - 'N-term(261.0307)'
+    'Acetyl@K':
+      - 'K(42.0105)'
+    'mTRAQ@K':
+      - 'K(140.0949)'
+    'mTRAQ@Any_N-term':
+      - 'N-term(140.0949)'
+    'mTRAQ:13C(3)15N(1)@K':
+      - 'K(144.1020)'
+    'mTRAQ:13C(3)15N(1)@Any_N-term':
+      - 'N-term(144.1020)'
+    'mTRAQ:13C(6)15N(2)@K':
+      - 'K(148.1091)'
+    'mTRAQ:13C(6)15N(2)@Any_N-term':
+      - 'N-term(148.1091)'
+    'TMTpro@K':
+      - 'K(304.2071)'
+    'TMTpro@Any_N-term':
+      - 'N-term(304.2071)'
+    'Dimethyl@K':
+      - 'K(28.0313)'
+    'Dimethyl@Any_N-term':
+      - 'N-term(28.0313)'
+    'Dimethyl:2H(4)@K':
+      - 'K(32.0564)'
+    'Dimethyl:2H(4)@Any_N-term':
+      - 'N-term(32.0564)'
+    'Dimethyl:2H(6)13C(2)@K':
+      - 'K(36.0756)'
+    'Dimethyl:2H(6)13C(2)@Any_N-term':
+      - 'N-term(36.0756)'
+    'Dimethyl:2H(4)13C(2)@K':
+      - 'K(34.0631)'
+    'Dimethyl:2H(4)13C(2)@Any_N-term':
+      - 'N-term(34.0631)'
+    'Dimethyl:2H(6)@K':
+      - 'K(34.0689)'
+    'Dimethyl:2H(6)@Any_N-term':
+      - 'N-term(34.0689)'
+    'Lactyl@K':
+      - 'K(72.0211)'
+    'Lactyl@Any_N-term':
+      - 'N-term(72.0211)'
+    'YnLactyl@K':
+      - 'K(239.1269)'
+    'YnLactyl@Any_N-term':
+      - 'N-term(239.1269)'
+    'Formyl@K':
+      - 'K(27.9949)'
+    'Formyl@Any_N-term':
+      - 'N-term(27.9949)'
+    'Formyl@T':
+      - 'T(27.9949)'
+    'Formyl@S':
+      - 'S(27.9949)'
+    'Nethylmaleimide@C':
+      - 'C(125.0476)'
+    'GG@K':
+      - 'K(114.0429)'
+    'GG@Any_N-term':
+      - 'N-term(114.0429)'
+    'GG@C':
+      - 'C(114.0429)'
+    'GG@S':
+      - 'S(114.0429)'
+    'GG@T':
+      - 'T(114.0429)'
+    'Oxidation@M':
+      - 'M(15.9949)'
+    'Carbamidomethyl@C':
+      - 'C(57.0214)'
+    'Carbamidomethyl@M':
+      - 'M(57.0214)'
+    'Phospho@S':
+      - 'S(79.9663)'
+    'Phospho@T':
+      - 'T(79.9663)'
+    'Phospho@Y':
+      - 'Y(79.9663)'
+    'Phospho@H':
+      - 'H(79.9663)'
+    'Phospho@D':
+      - 'D(79.9663)'
+    'Acetyl@Any_N-term':
+      - 'N-term(42.0105)'
+    'Acetyl@Protein_N-term':
+      - 'N-term(42.0105)'
+    'Glu->pyro-Glu@E^Any_N-term':
+      - 'E(-18.0105)'
+    'Gln->pyro-Glu@Q^Any_N-term':
+      - 'Q(-17.0265)'
+    'Ammonia-loss@C^Any_N-term':
+      - 'C(-17.0265)'
+    'Deamidated@N':
+      - 'N(0.9840)'
+    'Deamidated@Q':
+      - 'Q(0.9840)'
+    'Methyl@H':
+      - 'H(14.0156)'
+    'Methyl@Any_N-term':
+      - 'N-term(14.0156)'
+    'Methylthio@C':
+      - 'C(45.9877)'
+    'Propionyl@K':
+      - 'K(56.0262)'
+    'Propionyl@Any_N-term':
+      - 'N-term(56.0262)'
+    'Butyryl@K':
+      - 'K(70.0418)'
+    'Crotonyl@K':
+      - 'K(68.0262)'
+    'Succinyl@K':
+      - 'K(100.0160)'
+    'Malonyl@K':
+      - 'K(86.0003)'
+    'hydroxyisobutyryl@K':
+      - 'K(86.0367)'
+    'Nitro@Y':
+      - 'Y(44.9850)'
+    'Cysteinyl@C':
+      - 'C(119.0040)'
+    'Pyridylethyl@C':
+      - 'C(105.0578)'
+    'Carbamyl@Any_N-term':
+      - 'N-term(43.0058)'
+    'Biotin@Any_N-term':
+      - 'N-term(226.0775)'
+    'Amidated@Any_C-term':
+      - 'C-term(-0.9840)'
+    'Met->Hse@M^Any_C-term':
+      - 'M(-29.9928)'
+    'TMT6plex@K':
+      - 'K(229.1629)'
+    'TMT6plex@Any_N-term':
+      - 'N-term(229.1629)'
+    'TMT6plex@S':
+      - 'S(229.1629)'
+    'TMT6plex@T':
+      - 'T(229.1629)'
+    'TMT6plex@H':
+      - 'H(229.1629)'
+    'TMT6plex@Y':
+      - 'Y(229.1629)'
+    'iTRAQ4plex@K':
+      - 'K(144.1020)'
+    'iTRAQ4plex@Any_N-term':
+      - 'N-term(144.1020)'
+    'iTRAQ4plex@Y':
+      - 'Y(144.1020)'
+    'iTRAQ4plex@C':
+      - 'C(144.1020)'
+    'iTRAQ4plex@S':
+      - 'S(144.1020)'
+    'iTRAQ4plex@T':
+      - 'T(144.1020)'
+    'iTRAQ4plex@H':
+      - 'H(144.1020)'
+    'mTRAQ@Y':
+      - 'Y(140.0949)'
+    'mTRAQ@H':
+      - 'H(140.0949)'
+    'mTRAQ@S':
+      - 'S(140.0949)'
+    'mTRAQ@T':
+      - 'T(140.0949)'
+    'mTRAQ:13C(6)15N(2)@Y':
+      - 'Y(148.1091)'
+    'mTRAQ:13C(6)15N(2)@H':
+      - 'H(148.1091)'
+    'mTRAQ:13C(6)15N(2)@S':
+      - 'S(148.1091)'
+    'mTRAQ:13C(6)15N(2)@T':
+      - 'T(148.1091)'
+    'DiLeu4plex@K':
+      - 'K(145.1321)'
+    'DiLeu4plex@Any_N-term':
+      - 'N-term(145.1321)'
+    'DiLeu4plex@Y':
+      - 'Y(145.1321)'
+    'DiLeu4plex@S':
+      - 'S(145.1321)'
+    'DiLeu4plex@T':
+      - 'T(145.1321)'
+    'DiLeu4plex115@K':
+      - 'K(145.1199)'
+    'DiLeu4plex115@Any_N-term':
+      - 'N-term(145.1199)'
+    'DiLeu4plex117@K':
+      - 'K(145.1283)'
+    'DiLeu4plex117@Any_N-term':
+      - 'N-term(145.1283)'
+    'DiLeu4plex118@K':
+      - 'K(145.1404)'
+    'DiLeu4plex118@Any_N-term':
+      - 'N-term(145.1404)'
+    'PSMtag@K':
+      - 'K(308.1160)'
+    'PSMtag@S':
+      - 'S(308.1160)'
+    'PSMtag@T':
+      - 'T(308.1160)'
+    'PSMtag@Y':
+      - 'Y(308.1160)'
+    'PSMtag@Any_N-term':
+      - 'N-term(308.1160)'
+    'Glc-TA@K':
+      - 'K(236.0354)'
+    'Glc-TA@Any_N-term':
+      - 'N-term(236.0354)'
+    'Glc-TA-Succinamide@K':
+      - 'K(351.0624)'
+    'Glc-TA-Succinamide@Any_N-term':
+      - 'N-term(351.0624)'
+    'Gal-b14-Glc-TA@K':
+      - 'K(398.0882)'
+    'Gal-b14-Glc-TA@Any_N-term':
+      - 'N-term(398.0882)'
+    'Gal-b14-Glc-TA-Succinamide@K':
+      - 'K(513.1152)'
+    'Gal-b14-Glc-TA-Succinamide@Any_N-term':
+      - 'N-term(513.1152)'
+    'Sia-a23-Gal-b14-Glc-TA@K':
+      - 'K(689.1836)'
+    'Sia-a23-Gal-b14-Glc-TA@Any_N-term':
+      - 'N-term(689.1836)'
+    'Sia-a23-Gal-b14-Glc-TA-Succinamide@K':
+      - 'K(820.2055)'
+    'Sia-a23-Gal-b14-Glc-TA-Succinamide@Any_N-term':
+      - 'N-term(820.2055)'
+    'Benzyl-TA-Succinamide@K':
+      - 'K(295.0514)'
+    'Benzyl-TA-Succinamide@Any_N-term':
+      - 'N-term(295.0514)'
+    'Benzyl-TA@K':
+      - 'K(164.0295)'
+    'Benzyl-TA@Any_N-term':
+      - 'N-term(164.0295)'
+    'Benzyl@Any_N-term':
+      - 'N-term(90.0469)'
+    'Benzyl@K':
+      - 'K(90.0469)'
+    'DiLeu4plex115@S':
+      - 'S(145.1199)'
+    'DiLeu4plex115@T':
+      - 'T(145.1199)'
+    'DiLeu4plex115@Y':
+      - 'Y(145.1199)'
+    'DiLeu4plex117@S':
+      - 'S(145.1283)'
+    'DiLeu4plex117@T':
+      - 'T(145.1283)'
+    'DiLeu4plex117@Y':
+      - 'Y(145.1283)'
+    'DiLeu4plex118@S':
+      - 'S(145.1404)'
+    'DiLeu4plex118@T':
+      - 'T(145.1404)'
+    'DiLeu4plex118@Y':
+      - 'Y(145.1404)'
+    'Pro->3,4-Dehydro-L-proline@P':
+      - 'P(-2.0156)'
+    'Pro->(2S,4R)-4-hydroxyproline@P':
+      - 'P(15.9949)'
+    'Pro->(DL)-pipecolic_acid@P':
+      - 'P(14.0156)'
+    'Pro->(2S,3aS,7aS)-Octahydro-1H-indole-2-carboxylic_acid@P':
+      - 'P(54.0469)'
+    'Pro->(DL)-5-trifluoromethylproline@P':
+      - 'P(67.9873)'
+
+pfind:
+  reader_type: pfind
+  rt_unit: minute
+  column_mapping:
+    'sequence': 'Sequence'
+    'charge': 'Charge'
+    'rt': 'RT'
+    'raw_name': 'raw_name'
+    'query_id': 'File_Name'
+    'scan_num': 'Scan_No'
+    'score': 'Final_Score'
+    'proteins': 'Proteins'
+    'uniprot_ids': 'Proteins'
+    'fdr': 'Q-value'
+    'decoy': ['Target/Decoy', 'Targe/Decoy']
+  modification_mapping_type: null  # no mapping required
+
+# https://fragpipe.nesvilab.org/docs/tutorial_fragpipe_outputs.html#psmtsv
+msfragger_psm_tsv:
+  reader_type: msfragger_psm_tsv
+  rt_unit: second
+  column_mapping:
+    'sequence': 'Peptide'
+    'charge': 'Charge'
+    'rt': 'Retention'
+    'score': 'Hyperscore'
+    'proteins': 'Protein'
+    'decoy': 'Is Decoy'
+    'raw_name': 'raw_name'
+    'scan_num': 'scan_num'
+    'precursor_mz': 'Observed M/Z'
+    '_tmp_mods': 'Assigned Modifications'
+    'intensity': 'Intensity'
+    'mobility': 'Ion Mobility'
+  mass_mapped_mods:
+    - 'Oxidation@M'
+    - 'Carbamidomethyl@C'
+    - 'Carbamidomethyl@M'
+    - 'Phospho@S'
+    - 'Phospho@T'
+    - 'Phospho@Y'
+    - 'Phospho@H'
+    - 'Phospho@D'
+    - 'GG@K'
+    - 'GG@Any_N-term'
+    - 'GG@C'
+    - 'GG@S'
+    - 'GG@T'
+    - 'Acetyl@K'
+    - 'Acetyl@Any_N-term'
+    - 'Lactyl@K'
+    - 'Lactyl@Any_N-term'
+    - 'YnLactyl@K'
+    - 'YnLactyl@Any_N-term'
+    - 'Formyl@K'
+    - 'Formyl@Any_N-term'
+    - 'Formyl@T'
+    - 'Formyl@S'
+    - 'Glu->pyro-Glu@E^Any_N-term'
+    - 'Gln->pyro-Glu@Q^Any_N-term'
+    - 'Ammonia-loss@C^Any_N-term'
+    - 'TMT6plex@K'
+    - 'TMT6plex@Any_N-term'
+    - 'TMT6plex@S'
+    - 'TMT6plex@T'
+    - 'TMT6plex@H'
+    - 'TMT6plex@Y'
+    - 'TMTpro@K'
+    - 'TMTpro@Any_N-term'
+    - 'PSMtag@K'
+    - 'PSMtag@S'
+    - 'PSMtag@T'
+    - 'PSMtag@Y'
+    - 'PSMtag@Any_N-term'
+    - 'Dimethyl@K'
+    - 'Dimethyl@Any_N-term'
+    - 'Dimethyl:2H(4)@K'
+    - 'Dimethyl:2H(4)@Any_N-term'
+    - 'Dimethyl:2H(4)13C(2)@K'
+    - 'Dimethyl:2H(4)13C(2)@Any_N-term'
+    - 'Dimethyl:2H(6)13C(2)@K'
+    - 'Dimethyl:2H(6)13C(2)@Any_N-term'
+    - 'Dimethyl:2H(6)@K'
+    - 'Dimethyl:2H(6)@Any_N-term'
+    - 'Nethylmaleimide@C'
+    - 'Deamidated@N'
+    - 'Deamidated@Q'
+    - 'Methyl@H'
+    - 'Methyl@Any_N-term'
+    - 'Methylthio@C'
+    - 'Propionyl@K'
+    - 'Propionyl@Any_N-term'
+    - 'Butyryl@K'
+    - 'Crotonyl@K'
+    - 'Succinyl@K'
+    - 'Malonyl@K'
+    - 'hydroxyisobutyryl@K'
+    - 'Nitro@Y'
+    - 'Cysteinyl@C'
+    - 'Pyridylethyl@C'
+    - 'Carbamyl@Any_N-term'
+    - 'Biotin@Any_N-term'
+    - 'Amidated@Any_C-term'
+    - 'Met->Hse@M^Any_C-term'
+    - 'iTRAQ4plex@K'
+    - 'iTRAQ4plex@Any_N-term'
+    - 'iTRAQ4plex@Y'
+    - 'iTRAQ4plex@C'
+    - 'iTRAQ4plex@S'
+    - 'iTRAQ4plex@T'
+    - 'iTRAQ4plex@H'
+    - 'mTRAQ@K'
+    - 'mTRAQ@Any_N-term'
+    - 'mTRAQ@Y'
+    - 'mTRAQ@H'
+    - 'mTRAQ@S'
+    - 'mTRAQ@T'
+    - 'mTRAQ:13C(6)15N(2)@K'
+    - 'mTRAQ:13C(6)15N(2)@Any_N-term'
+    - 'mTRAQ:13C(6)15N(2)@Y'
+    - 'mTRAQ:13C(6)15N(2)@H'
+    - 'mTRAQ:13C(6)15N(2)@S'
+    - 'mTRAQ:13C(6)15N(2)@T'
+    - 'DiLeu4plex@K'
+    - 'DiLeu4plex@Any_N-term'
+    - 'DiLeu4plex@Y'
+    - 'DiLeu4plex@S'
+    - 'DiLeu4plex@T'
+    - 'DiLeu4plex115@K'
+    - 'DiLeu4plex115@Any_N-term'
+    - 'DiLeu4plex117@K'
+    - 'DiLeu4plex117@Any_N-term'
+    - 'DiLeu4plex118@K'
+    - 'DiLeu4plex118@Any_N-term'
+    - 'Glc-TA@K'
+    - 'Glc-TA@Any_N-term'
+    - 'Glc-TA-Succinamide@K'
+    - 'Glc-TA-Succinamide@Any_N-term'
+    - 'Gal-b14-Glc-TA@K'
+    - 'Gal-b14-Glc-TA@Any_N-term'
+    - 'Gal-b14-Glc-TA-Succinamide@K'
+    - 'Gal-b14-Glc-TA-Succinamide@Any_N-term'
+    - 'Sia-a23-Gal-b14-Glc-TA@K'
+    - 'Sia-a23-Gal-b14-Glc-TA@Any_N-term'
+    - 'Sia-a23-Gal-b14-Glc-TA-Succinamide@K'
+    - 'Sia-a23-Gal-b14-Glc-TA-Succinamide@Any_N-term'
+    - 'Benzyl-TA-Succinamide@K'
+    - 'Benzyl-TA-Succinamide@Any_N-term'
+    - 'Benzyl-TA@K'
+    - 'Benzyl-TA@Any_N-term'
+    - 'Benzyl@Any_N-term'
+    - 'Benzyl@K'
+    - 'DiLeu4plex115@S'
+    - 'DiLeu4plex115@T'
+    - 'DiLeu4plex115@Y'
+    - 'DiLeu4plex117@S'
+    - 'DiLeu4plex117@T'
+    - 'DiLeu4plex117@Y'
+    - 'DiLeu4plex118@S'
+    - 'DiLeu4plex118@T'
+    - 'DiLeu4plex118@Y'
+  mod_mass_tol: 0.1
+  modification_mapping_type: 'msfragger'
+
+msfragger_pepxml:
+  reader_type: msfragger_pepxml
+  rt_unit: second
+  column_mapping:
+    'sequence': 'peptide'
+    'charge': 'assumed_charge'
+    'rt': 'retention_time_sec'
+    'query_id': 'spectrum'
+    'scan_num': 'start_scan'
+    'score': 'expect'
+    'proteins': 'protein'
+    'raw_name': 'raw_name'
+    'mobility': 'ion_mobility'
+  mass_mapped_mods:
+    - 'Oxidation@M' #other Oxidation@X are not needed here
+    - 'Carbamidomethyl@C'
+    - 'Phospho@S' #TY are not needed here
+    - 'GG@K'
+    - 'Cysteinyl@C'
+    - 'Acetyl@Any_N-term'
+    - 'Glu->pyro-Glu@E^Any_N-term'
+    - 'Gln->pyro-Glu@Q^Any_N-term'
+    - 'Dimethyl@K' # Any_N-term is not needed here as it will be infered in-the-fly
+    - 'Methyl@E' #an example of a PTM that can be C-term
+  mod_mass_tol: 0.1 # Da
+  modification_mapping_type: 'maxquant'
+
+diann: # 1.8.1
+  reader_type: diann
+  rt_unit: minute
+  fixed_C57: False
+  column_mapping:
+    'raw_name': 'Run'
+    'sequence': 'Stripped.Sequence'
+    'charge': 'Precursor.Charge'
+    'rt': 'RT'
+    'rt_start': 'RT.Start'
+    'rt_stop': 'RT.Stop'
+    'ccs': 'CCS'
+    'mobility': ['IM','IonMobility']
+    'proteins': 'Protein.Group'
+    'uniprot_ids': 'Protein.Ids'
+    'genes': 'Genes'
+    'scan_num': 'MS2.Scan'
+    'score': 'CScore'
+    'fdr': 'Q.Value'
+    'intensity': "PG.MaxLFQ"
+    "precursor_intensity": "Precursor.Normalised"
+    "precursor_id": "Precursor.Id"
+    "gene_intensity": "Genes.MaxLFQ"
+    # extra columns for performing FDR cutoff
+    'fdr1_search1': 'Global.Q.Value'  # first search
+    'fdr2_search1': 'Global.PG.Q.Value'  # first search
+    'fdr1_search2': 'Lib.Q.Value'  # second search
+    'fdr2_search2': 'Lib.PG.Q.Value' # second search
+
+  mod_seq_columns:
+    - "Modified.Sequence"
+  modification_mapping_type: 'maxquant'
+
+spectronaut_report:
+  reader_type: spectronaut_report
+  rt_unit: minute
+  fixed_C57: False
+  column_mapping:
+    'raw_name': 'R.FileName'
+    'rt': ['EG.ApexRT','EG.MeanApexRT']
+    'mobility': ['FG.ApexIonMobility']
+    'proteins': ['PG.ProteinNames','PG.ProteinGroups']
+    'genes': 'PG.Genes'
+    'uniprot_ids': 'PG.UniProtIds'
+    'charge': 'charge'
+  mod_seq_columns:
+    - 'ModifiedSequence'
+  precursor_id_columns:
+    - "EG.PrecursorId"
+  modification_mapping_type: 'maxquant'
+
+spectronaut:
+  reader_type: spectronaut
+  rt_unit: irt
+  fixed_C57: False
+  column_mapping:
+    'raw_name': 'ReferenceRun'
+    'sequence': ['StrippedPeptide','PeptideSequence']
+    'charge': 'PrecursorCharge'
+    'rt': ['RT','iRT','Tr_recalibrated','RetentionTime','NormalizedRetentionTime']
+    'ccs': 'CCS'
+    'precursor_mz': 'PrecursorMz'
+    'mobility': ['Mobility','IonMobility','PrecursorIonMobility']
+    'proteins': ['Protein Name','ProteinId','ProteinID','ProteinName','ProteinGroup','ProteinGroups']
+    'uniprot_ids': ['UniProtIds','UniProtID','UniprotId']
+    'genes': ['Genes','Gene','GeneName','GeneNames']
+  mod_seq_columns:
+    - 'ModifiedPeptide'
+    - 'ModifiedSequence'
+    - 'FullUniModPeptideName'
+    - 'ModifiedPeptideSequence'
+    - 'LabeledSequence'
+    - 'FullUniModPeptideName'
+  precursor_id_columns:
+    - "EG.PrecursorId"
+  modification_mapping_type: 'maxquant'
+
+library_reader_base:
+  reader_type: library_reader_base
+  rt_unit: irt
+  fixed_C57: False
+  column_mapping:
+    'raw_name': 'ReferenceRun'
+    'sequence': ['PeptideSequence', 'StrippedPeptide']
+    'modified_sequence': ['ModifiedPeptideSequence','ModifiedPeptide']
+    'charge': 'PrecursorCharge'
+    'rt': ['RT','iRT','Tr_recalibrated','RetentionTime','NormalizedRetentionTime']
+    'ccs': 'CCS'
+    'precursor_mz': 'PrecursorMz'
+    'mobility': ['Mobility','IonMobility','PrecursorIonMobility']
+    'proteins': ['ProteinId','ProteinID','ProteinName','Protein Name',]
+    'uniprot_ids': ['UniProtIds','UniProtID','UniprotId']
+    'genes': ['GeneName','Genes','Gene',]
+    'fragment_intensity': ['LibraryIntensity','RelativeIntensity', 'RelativeFragmentIntensity', 'RelativeFragmentIonIntensity']
+    'fragment_mz': ['ProductMz']
+    'fragment_type': ['FragmentType', 'FragmentIonType', 'ProductType', 'ProductIonType']
+    'fragment_charge' : ['FragmentCharge', 'FragmentIonCharge', 'ProductCharge', 'ProductIonCharge']
+    'fragment_series': ['FragmentSeriesNumber','FragmentNumber']
+    'fragment_loss_type': ['FragmentLossType', 'FragmentIonLossType', 'ProductLossType', 'ProductIonLossType']
+  mod_seq_columns:
+    - 'ModifiedPeptideSequence'
+    - 'ModifiedPeptide'
+    - 'ModifiedSequence'
+    - 'FullUniModPeptideName'
+    - 'LabeledSequence'
+    - 'FullUniModPeptideName'
+  modification_mapping_type: 'maxquant'
+
+sage:
+  reader_type: sage
+  rt_unit: second
+  column_mapping:
+    'modified_sequence': 'peptide'
+    'sequence': 'stripped_peptide'
+    'charge': 'charge'
+    'rt': 'rt'
+    'mobility': 'mobility'
+    'raw_name': 'filename'
+    'scannr': 'scannr'
+    'score': 'sage_discriminant_score'
+    'proteins': 'proteins'
+    'fdr': 'spectrum_q'
+    'peptide_fdr': 'peptide_q'
+    'protein_fdr': 'protein_q'
+    'decoy': 'is_decoy'
+  modification_mapping_type: null # custom mapping in code
