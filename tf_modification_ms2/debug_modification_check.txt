@@ -245,7 +245,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [31] PSM ID: psm_31
@@ -253,7 +253,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [32] PSM ID: psm_32
@@ -261,7 +261,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [33] PSM ID: psm_33
@@ -269,7 +269,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [34] PSM ID: psm_34
@@ -277,7 +277,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [35] PSM ID: psm_35
@@ -285,7 +285,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [36] PSM ID: psm_36
@@ -293,7 +293,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [37] PSM ID: psm_37
@@ -301,7 +301,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [38] PSM ID: psm_38
@@ -309,7 +309,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [39] PSM ID: psm_39
@@ -317,7 +317,7 @@ Peptide Gốc: _AHT(UniMod:21)PTPGIYMGRPTHSGGGGGGGGGGGGGGGGR_
 Chuỗi AA: AHTPTPGIYMGRPTHSGGGGGGGGGGGGGGGGR
 Mod AlphaBase: Phospho@T
 Vị trí Site: 3
-Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+Indices: [0, 1, 8, 20, 16, 20, 16, 7, 9, 25, 13, 7, 18, 16, 20, 8, 19, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 18, 0]
 Vị trí Mod trong Tensor: [3]
 ----------------------------------------
 [40] PSM ID: psm_40
@@ -325,7 +325,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [41] PSM ID: psm_41
@@ -333,7 +333,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [42] PSM ID: psm_42
@@ -341,7 +341,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [43] PSM ID: psm_43
@@ -349,7 +349,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [44] PSM ID: psm_44
@@ -357,7 +357,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [45] PSM ID: psm_45
@@ -365,7 +365,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [46] PSM ID: psm_46
@@ -373,7 +373,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [47] PSM ID: psm_47
@@ -381,7 +381,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [48] PSM ID: psm_48
@@ -389,7 +389,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [49] PSM ID: psm_49
@@ -397,7 +397,7 @@ Peptide Gốc: _AKS(UniMod:21)PQPPVEEEDEHFDDTVVC(UniMod:4)LDTYNC(UniMod:4)DLHFK_
 Chuỗi AA: AKSPQPPVEEEDEHFDDTVVCLDTYNCDLHFK
 Mod AlphaBase: Phospho@S;Carbamidomethyl@C;Carbamidomethyl@C
 Vị trí Site: 3;21;27
-Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12]
+Indices: [0, 1, 11, 19, 16, 17, 16, 16, 22, 5, 5, 5, 4, 5, 8, 6, 4, 4, 20, 22, 22, 3, 12, 4, 20, 25, 14, 3, 4, 12, 8, 6, 11, 0]
 Vị trí Mod trong Tensor: [3, 21, 27]
 ----------------------------------------
 [50] PSM ID: psm_50
@@ -1525,7 +1525,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [191] PSM ID: psm_191
@@ -1533,7 +1533,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [192] PSM ID: psm_192
@@ -1541,7 +1541,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [193] PSM ID: psm_193
@@ -1549,7 +1549,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [194] PSM ID: psm_194
@@ -1557,7 +1557,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [195] PSM ID: psm_195
@@ -1565,7 +1565,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [196] PSM ID: psm_196
@@ -1573,7 +1573,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [197] PSM ID: psm_197
@@ -1581,7 +1581,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [198] PSM ID: psm_198
@@ -1589,7 +1589,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [199] PSM ID: psm_199
@@ -1597,7 +1597,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [200] PSM ID: psm_200
@@ -1605,7 +1605,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [201] PSM ID: psm_201
@@ -1613,7 +1613,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [202] PSM ID: psm_202
@@ -1621,7 +1621,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [203] PSM ID: psm_203
@@ -1629,7 +1629,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [204] PSM ID: psm_204
@@ -1637,7 +1637,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [205] PSM ID: psm_205
@@ -1645,7 +1645,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [206] PSM ID: psm_206
@@ -1653,7 +1653,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [207] PSM ID: psm_207
@@ -1661,7 +1661,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [208] PSM ID: psm_208
@@ -1669,7 +1669,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [209] PSM ID: psm_209
@@ -1677,7 +1677,7 @@ Peptide Gốc: _C(UniMod:4)GSGPVHISGQHLVAVEEDAES(UniMod:21)EDEEEEDVKLLSISGK_
 Chuỗi AA: CGSGPVHISGQHLVAVEEDAESEDEEEEDVKLLSISGK
 Mod AlphaBase: Carbamidomethyl@C;Phospho@S
 Vị trí Site: 1;22
-Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4]
+Indices: [0, 3, 7, 19, 7, 16, 22, 8, 9, 19, 7, 17, 8, 12, 22, 1, 22, 5, 5, 4, 1, 5, 19, 5, 4, 5, 5, 5, 5, 4, 22, 11, 12, 12, 19, 9, 19, 7, 11, 0]
 Vị trí Mod trong Tensor: [1, 22]
 ----------------------------------------
 [210] PSM ID: psm_210

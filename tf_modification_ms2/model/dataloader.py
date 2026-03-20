@@ -9,7 +9,7 @@ from model.featurize import get_batch_aa_indices, get_batch_mod_feature
 from model.settings import MOD_DF
 
 class MS2Dataset(Dataset):
-    def __init__(self, df, max_len=30):
+    def __init__(self, df, max_len=40):
         self.max_len = max_len
         # Load từ điển UniMod ID -> Tên chuẩn AlphaBase (vd: 21 -> Phospho@S)
         self.unimod_to_name = MOD_DF[MOD_DF['unimod_id'] != 0].set_index('unimod_id')['mod_name'].to_dict()
@@ -27,7 +27,7 @@ class MS2Dataset(Dataset):
         # 2. Xử lý Input
         raw_aa = get_batch_aa_indices(self.df_meta['sequence'].values.astype('U'))
         raw_aa = np.where((raw_aa >= 1) & (raw_aa <= 26), raw_aa, 0)
-        
+
         feat_df = self.df_meta.reset_index().copy()
         actual_max_nAA = feat_df['nAA'].max()
         feat_df['nAA'] = actual_max_nAA
@@ -153,8 +153,8 @@ if __name__ == "__main__":
     
     full_df = pd.concat(dfs, ignore_index=True)
     
-    # 2. Khởi tạo Dataset (max_len=30 để khớp Transformer)
-    dataset = MS2Dataset(full_df, max_len=30)
+    # 2. Khởi tạo Dataset (max_len=40 để khớp Transformer)
+    dataset = MS2Dataset(full_df, max_len=40)
     
     # 3. Ghi log kiểm tra ra file txt
     log_file = "debug_modification_check.txt"

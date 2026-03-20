@@ -19,7 +19,7 @@ if __name__ == "__main__":
             dfs.append(temp)
     
     full_df = pd.concat(dfs, ignore_index=True)
-    dataset = MS2Dataset(full_df, max_len=30)
+    dataset = MS2Dataset(full_df, max_len=40)
     dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
 
     # Lấy 1 batch ngẫu nhiên
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print("="*50)
     
     # In AA Indices (xem có bị toàn số 0 không)
-    print(f"AA Indices (đầu chuỗi): {batch['aa_idx'][idx_in_batch][:15].tolist()}")
+    print(f"AA Indices (đầu chuỗi): {batch['aa_idx'][idx_in_batch][:].tolist()}")
     
     # In Target (Ma trận MS2 8 cột)
     print("\n Target :")
