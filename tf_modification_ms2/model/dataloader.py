@@ -7,11 +7,66 @@ from torch.utils.data import Dataset, DataLoader
 
 from model.featurize import get_batch_aa_indices, get_batch_mod_feature
 from model.settings import MOD_DF
+from torch.utils.data import Sampler
+
+import random
+
+class LengthGroupedSampler(Sampler):
+    def __init__(self, nAA_list, batch_size, shuffle=True):
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        
+        # Nhóm các index theo độ dài nAA
+        # Ví dụ: {10: [1, 5, 20], 15: [2, 3, 4, 10...]}
+        self.group_indices = {}
+        for idx, nAA in enumerate(nAA_list):
+            if nAA not in self.group_indices:
+                self.group_indices[nAA] = []
+            self.group_indices[nAA].append(idx)
+        
+        self.batches = []
+        for nAA, indices in self.group_indices.items():
+            if self.shuffle:
+                random.shuffle(indices)
+            
+            # Chia indices của cùng một độ dài thành các batch
+            for i in range(0, len(indices), self.batch_size):
+                self.batches.append(indices[i:i + self.batch_size])
+        
+        if self.shuffle:
+            random.shuffle(self.batches)
+
+    def __iter__(self):
+        for batch in self.batches:
+            yield batch
+
+    def __len__(self):
+        return len(self.batches)
+
+
+def collate_fn_ms2_grouped(batch):
+    # Vì tất cả b['aa_idx'] trong batch này đều cùng size, dùng torch.stack thay vì pad_sequence
+    aa_idx = torch.stack([b['aa_idx'] for b in batch])
+    mod_x = torch.stack([b['mod_x'] for b in batch])
+    target = torch.stack([b['target'] for b in batch])
+    
+    charge = torch.stack([b['charge'] for b in batch]).view(-1, 1)
+    nce = torch.stack([b['nce'] for b in batch]).view(-1, 1)
+    inst = torch.stack([b['instrument'] for b in batch]).view(-1).long()
+
+    return {
+        "aa_idx": aa_idx,
+        "mod_x": mod_x,
+        "target": target,
+        "charge": charge,
+        "nce": nce,
+        "instrument": inst,
+        "psm_id": [b['psm_id'] for b in batch]
+    }
 
 class MS2Dataset(Dataset):
-    def __init__(self, df, max_len=40):
-        self.max_len = max_len
-        # Load từ điển UniMod ID -> Tên chuẩn AlphaBase (vd: 21 -> Phospho@S)
+    def __init__(self, df):
+        # Không cần max_len nữa vì ta sẽ dùng dynamic batching
         self.unimod_to_name = MOD_DF[MOD_DF['unimod_id'] != 0].set_index('unimod_id')['mod_name'].to_dict()
         
         # 1. Tiền xử lý Metadata
@@ -20,120 +75,93 @@ class MS2Dataset(Dataset):
         self.df_meta[['sequence', 'mods', 'mod_sites', 'nAA']] = pd.DataFrame(
             parsed_data.tolist(), index=self.df_meta.index
         )
-        
-        # QUAN TRỌNG: Đặt psm_id làm index để tránh lỗi KeyError khi dùng .loc
         self.df_meta.set_index('psm_id', inplace=True)
+        self.default_nce = 30.0 / 100.0
+        self.default_inst = 0
 
-        # 2. Xử lý Input
-        raw_aa = get_batch_aa_indices(self.df_meta['sequence'].values.astype('U'))
-        raw_aa = np.where((raw_aa >= 1) & (raw_aa <= 26), raw_aa, 0)
+        max_nAA_dataset = self.df_meta['nAA'].max()
 
+        # 2. Xử lý Input (Giữ nguyên thô, không pad)
+        # Lưu ý: get_batch_aa_indices trả về L+2
+        self.aa_indices_dict = get_batch_aa_indices(self.df_meta['sequence'].values.astype('U'))
+        self.aa_indices_dict = np.where((self.aa_indices_dict >= 1) & (self.aa_indices_dict <= 26), self.aa_indices_dict, 0)
+        
+        # Xử lý Mod Features thô
         feat_df = self.df_meta.reset_index().copy()
-        actual_max_nAA = feat_df['nAA'].max()
-        feat_df['nAA'] = actual_max_nAA
-
-        raw_mod = get_batch_mod_feature(feat_df) # Reset để hàm feature đọc được psm_id nếu cần
+        feat_df['nAA'] = max_nAA_dataset
+        self.mod_x_data = get_batch_mod_feature(feat_df) 
         
-        self.aa_indices = self._pad_or_clip_2d(raw_aa, max_len)
-        self.mod_x = self._pad_or_clip_3d(raw_mod, max_len)
-        
-        # 3. Xử lý Target
-        self.targets = self._process_targets(df)
-        self.psm_ids = self.df_meta.index.values # Lấy từ index đã set
+        # 3. Xử lý Target (Chỉ lấy đúng nAA - 1 dòng cho mỗi peptide)
+        self.targets = self._process_targets_dynamic(df)
+        self.psm_ids = self.df_meta.index.values 
         self.charges = self.df_meta['PrecursorCharge'].values
+        self.nAA_list = self.df_meta['nAA'].values
 
-    def _parse_peptdeep_format(self, mod_peptide):
-        peptide = mod_peptide.strip('_')
-        
-        # Tách chuỗi AA sạch trước để biết AA tại mỗi vị trí
-        clean_seq = re.sub(r'\(UniMod:\d+\)', '', peptide)
-        nAA = len(clean_seq)
-        
-        # Danh sách kết quả
-        mods = []
-        mod_sites = []
-
-        # 1. Xử lý N-term modification (đầu chuỗi)
-        n_term_match = re.match(r'^\((UniMod:(\d+))\)', peptide)
-        if n_term_match:
-            uid = int(n_term_match.group(2))
-            # Ưu tiên ánh xạ UniMod:1 ở đầu chuỗi về Any_N-term
-            if uid == 1:
-                mods.append("Acetyl@Any_N-term")
-            else:
-                # Tra cứu các loại N-term khác trong MOD_DF
-                n_term_name = MOD_DF[(MOD_DF.unimod_id == uid) & 
-                                    (MOD_DF.mod_name.str.contains('N-term'))].mod_name.iloc[0]
-                mods.append(n_term_name)
-            mod_sites.append(0)
-            peptide = peptide[len(n_term_match.group(0)):]
-
-        # 2. Xử lý các Modification trên Residue (giữa chuỗi)
-        # Dùng regex để bắt cặp: AA đứng trước + (UniMod:XX)
-        residue_matches = re.finditer(r'([A-Z])\((UniMod:(\d+))\)', peptide)
-        
-        # Để tính site chuẩn, ta dựa vào độ dài chuỗi sạch tính đến vị trí match
-        for m in residue_matches:
-            aa = m.group(1) # Acid amin (ví dụ: S, C, T)
-            uid = int(m.group(3))
-            
-            # Tìm tên mod khớp cả ID và AA (ví dụ: Phospho@S thay vì Phospho@T)
-            # Ta lọc MOD_DF theo unimod_id và cái đuôi '@AA'
-            possible_names = MOD_DF[(MOD_DF.unimod_id == uid) & 
-                                    (MOD_DF.mod_name.str.endswith(f"@{aa}"))].mod_name.values
-            
-            if len(possible_names) > 0:
-                true_name = possible_names[0]
-            else:
-                # Nếu không tìm thấy @AA, lấy đại thằng đầu tiên của ID đó
-                true_name = MOD_DF[MOD_DF.unimod_id == uid].mod_name.iloc[0]
-                
-            mods.append(true_name)
-            
-            # Tính vị trí thực tế trong clean_seq
-            pre_str = peptide[:m.start(1)+1]
-            site = len(re.sub(r'\(UniMod:\d+\)', '', pre_str))
-            mod_sites.append(site)
-
-        return clean_seq, ";".join(mods), ";".join(map(str, mod_sites)), nAA
-
-    def _process_targets(self, df):
+    def _process_targets_dynamic(self, df):
         frag_types = ["b_z1", "b_z2", "y_z1", "y_z2", "b_modloss_z1", "b_modloss_z2", "y_modloss_z1", "y_modloss_z2"]
         df = df.copy()
         df['charge_num'] = df['FragmentCharge'].astype(str).str.extract('(\d+)').astype(int)
         df['loss_clean'] = df['FragmentLossType'].apply(lambda x: '' if x in ['noloss', ''] else '_modloss')
         df['target_col'] = df['FragmentType'] + df['loss_clean'] + '_z' + df['charge_num'].astype(str)
+        
         pivot = df.pivot_table(index=['psm_id', 'FragmentNumber'], columns='target_col', values='RelativeIntensity', aggfunc='max')
         pivot = pivot.reindex(columns=frag_types, fill_value=0.0).fillna(0)
         
         target_dict = {}
         for psm_id, group in pivot.groupby(level=0):
-            padded = np.zeros((self.max_len, 8))
-            mat = group.values
-            padded[:min(len(mat), self.max_len), :] = mat[:self.max_len, :]
-            target_dict[psm_id] = padded
+
+            nAA = self.df_meta.loc[psm_id, 'nAA'] 
+            full_index = pd.MultiIndex.from_product([[psm_id], range(1, nAA)], names=['psm_id', 'FragmentNumber'])
+            actual_matrix = group.reindex(full_index, fill_value=0.0)
+            target_dict[psm_id] = actual_matrix.values.astype(np.float32)
+
         return target_dict
 
-    def _pad_or_clip_2d(self, arr, max_len):
-        res = np.zeros((arr.shape[0], max_len), dtype=arr.dtype)
-        res[:, :min(arr.shape[1], max_len)] = arr[:, :min(arr.shape[1], max_len)]
-        return res
+    def _parse_peptdeep_format(self, mod_peptide):
+        peptide = mod_peptide.strip('_')
+        clean_seq = re.sub(r'\(UniMod:\d+\)', '', peptide)
+        nAA = len(clean_seq)
+        mods, mod_sites = [], []
 
-    def _pad_or_clip_3d(self, arr, max_len):
-        res = np.zeros((arr.shape[0], max_len, arr.shape[2]), dtype=arr.dtype)
-        res[:, :min(arr.shape[1], max_len), :] = arr[:, :min(arr.shape[1], max_len), :]
-        return res
+        n_term_match = re.match(r'^\((UniMod:(\d+))\)', peptide)
+        if n_term_match:
+            uid = int(n_term_match.group(2))
+            mods.append("Acetyl@Any_N-term" if uid == 1 else MOD_DF[(MOD_DF.unimod_id == uid) & (MOD_DF.mod_name.str.contains('N-term'))].mod_name.iloc[0])
+            mod_sites.append(0)
+            peptide = peptide[len(n_term_match.group(0)):]
+
+        residue_matches = re.finditer(r'([A-Z])\((UniMod:(\d+))\)', peptide)
+        for m in residue_matches:
+            aa, uid = m.group(1), int(m.group(3))
+            possible_names = MOD_DF[(MOD_DF.unimod_id == uid) & (MOD_DF.mod_name.str.endswith(f"@{aa}"))].mod_name.values
+            mods.append(possible_names[0] if len(possible_names) > 0 else MOD_DF[MOD_DF.unimod_id == uid].mod_name.iloc[0])
+            pre_str = peptide[:m.start(1)+1]
+            mod_sites.append(len(re.sub(r'\(UniMod:\d+\)', '', pre_str)))
+
+        return clean_seq, ";".join(mods), ";".join(map(str, mod_sites)), nAA
 
     def __len__(self): return len(self.psm_ids)
 
     def __getitem__(self, idx):
         psm_id = self.psm_ids[idx]
+        nAA = self.nAA_list[idx]
+        
+       
+        aa_idx = torch.tensor(self.aa_indices_dict[idx, :nAA+2], dtype=torch.long)
+        mod_x = torch.tensor(self.mod_x_data[idx, :nAA+2, :], dtype=torch.float32)
+        target = torch.tensor(self.targets[psm_id], dtype=torch.float32)
+        
         return {
-            "aa_idx": torch.tensor(self.aa_indices[idx], dtype=torch.long),
-            "mod_x": torch.tensor(self.mod_x[idx], dtype=torch.float32),
-            "target": torch.tensor(self.targets[psm_id], dtype=torch.float32),
+            "aa_idx": aa_idx,
+            "mod_x": mod_x,
+            "charge": torch.tensor([self.charges[idx]], dtype=torch.float32),
+            "nce": torch.tensor([self.default_nce], dtype=torch.float32),
+            "instrument": torch.tensor([self.default_inst], dtype=torch.long),
+            "target": target,
             "psm_id": psm_id
         }
+    
+
 
 if __name__ == "__main__":
     base_dir = r"D:/DACN/tf-test/tf_modification_ms2/data/251128"
@@ -154,7 +182,7 @@ if __name__ == "__main__":
     full_df = pd.concat(dfs, ignore_index=True)
     
     # 2. Khởi tạo Dataset (max_len=40 để khớp Transformer)
-    dataset = MS2Dataset(full_df, max_len=40)
+    dataset = MS2Dataset(full_df)
     
     # 3. Ghi log kiểm tra ra file txt
     log_file = "debug_modification_check.txt"

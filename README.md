@@ -1,7 +1,5 @@
 ﻿# Research Plan: Transformer-based Proteomics Modeling
 
-
-
 ## Plan of Investigation
 
 ### **Now – November (T11)**
@@ -72,4 +70,3 @@
 
 - Gessulat et al., _Prosit: proteome-wide prediction of peptide tandem mass spectra by deep learning_, **Nat Methods (2019)**.
 - Wen et al., _AlphaPeptDeep: A modular deep learning framework to predict peptide properties for proteomics_, **Nat Commun (2023)**.
-

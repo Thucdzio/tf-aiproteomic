@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from building_block import *
+from model.building_block import *
 
 class ModelMS2Transformer(nn.Module):
     def __init__(   

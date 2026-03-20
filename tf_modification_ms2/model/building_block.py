@@ -1,11 +1,9 @@
 import torch
 import numpy as np
 
-# BERT from huggingface
-from transformers.models.bert.modeling_bert import BertEncoder
 
-from settings import model_const
-from settings import global_settings as settings
+from model.settings import model_const
+from model.settings import global_settings as settings
 
 torch.set_num_threads(2)
 
